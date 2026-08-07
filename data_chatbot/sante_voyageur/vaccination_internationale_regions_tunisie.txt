@@ -1,0 +1,40 @@
+[GOUVERNORAT : TUNIS]
+- Établissement Référent : Institut Pasteur de Tunis (IPT) - Centre de Vaccination Internationale
+- Adresse : 13 Place Pasteur, BP 74, Tunis 1002
+- Contacts Officiels : Téléphone : 71 844 780 / Fax : 71 791 833
+- Prise de Rendez-vous en ligne : http://pasteur.tn
+
+- Horaires Officiels des Services :
+  * Vaccination contre la Rage (Urgences morsures) :
+    - Du lundi au samedi : de 07h30 à 19h00 (non-stop)
+    - Dimanche et jours fériés : Permanence de 09h00 à 17h00
+    - Jours de l'Aïd : Permanence de 09h00 à 13h00
+  * Vaccinations Internationales (Hadj, Omra, Voyages) :
+    - Horaires d'Hiver : Du lundi au vendredi de 08h30 à 14h00
+    - Horaires d'Été et Ramadan : Du lundi au vendredi de 08h00 à 13h30
+    - Spécificité Fièvre Jaune : Séances ouvertes les lundis et jeudis à partir de 09h00 (ou sur rendez-vous)
+    - Spécificité Test IDR à la Tuberculine (OFI) : Injections les vendredis matins (08h00-10h00 en été, 08h30-10h00 en hiver) et lecture obligatoire le lundi après-midi suivant.
+  * Consultations Internationales de Médecine des Voyages :
+    - Jours de consultation : Mardi, Mercredi, Jeudi, Vendredi
+
+- Documents Obligatoires à Fournir :
+  * Une pièce d'identité officielle avec photo pour l'enregistrement (Carte d'Identité Nationale - CIN, Passeport, Extrait de naissance récent ou livret de famille pour les enfants).
+  * Le carnet de vaccination internationale (carnet jaune) si le citoyen a déjà été vacciné auparavant, ou toute autre preuve de vaccination antérieure.
+
+- Grille Tarifaire Officielle Complète des Prestations (Prix TTC en Dinars Tunisiens - DT) :
+  * Vaccin de la Méningite ACYW135 (Obligatoire Hadj et Omra) : 130,000 DT
+  * Vaccin de la Fièvre Jaune mono-dose : 115,000 DT
+  * Vaccin de la Fièvre Jaune multi-dose : 27,000 DT (Soumis à disponibilité des stocks)
+  * Vaccin antipneumococcique (Prévenar 13) : 240,000 DT
+  * Vaccin antipneumococcique (Pneumovax) : 120,000 DT
+  * Vaccin de l'Hépatite A (Adulte) : 100,000 DT
+  * Vaccin de la Diphtérie-Tétanos-Polio-Coqueluche (Tetraxim) : 80,000 DT
+  * Vaccin de la Diphtérie-Tétanos-Polio dTP (Dultavax) : 75,000 DT
+  * Vaccin de la Rougeole, Oreillons, Rubéole ROR (Priorix) : 55,000 DT
+  * IDR à la Tuberculine (Test Monotest) : 55,000 DT
+  * Vaccin de la Fièvre Typhoïde : 50,000 DT
+  * Vaccin de la Polio injectable (Imovax Polio) : 45,000 DT
+  * Vaccin Antirabique (Contre la Rage) : 31,943 DT
+  * Vaccin de l'Hépatite B (Adulte) : 20,000 DT
+  * Vaccin de la Diphtérie-Tétanos dT (Adulte) : 18,000 DT
+  * Prestation Administrative - DUPLICATA de carnet de vaccination international perdu : 10,000 DT

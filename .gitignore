@@ -15,3 +15,6 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# ChromaDB — généré localement, re-créé au démarrage sur Render
+chroma_db/

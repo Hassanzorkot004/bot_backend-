@@ -1,2 +1,5 @@
 groq
 PyYAML
+sentence-transformers
+chromadb
+pypdf
