@@ -13,12 +13,14 @@ import chromadb
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 
-# ── Modèle multilingue (français, arabe, anglais) ─────────────────────────────
+# ── Modèle multilingue LÉGER (~90MB en mémoire) ───────────────────────────────
+# paraphrase-multilingual-MiniLM-L12-v2 = 118MB disque, ~200MB RAM
+# Bien plus petit que le modèle complet, supporte français/arabe
 model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 
 
 def get_embedding(text: str) -> list:
-    return model.encode(text).tolist()
+    return model.encode(text, convert_to_numpy=True).tolist()
 
 
 # ── ChromaDB : base locale persistante ────────────────────────────────────────
@@ -27,14 +29,7 @@ BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 CHROMA_DIR = os.path.join(BASE_DIR, "chroma_db")
 
 chroma_client   = chromadb.PersistentClient(path=CHROMA_DIR)
-
-# Supprimer et recréer la collection à chaque indexation pour repartir propre
-try:
-    chroma_client.delete_collection(name="medibot_docs")
-    print("[index_docs] Collection existante supprimée.")
-except Exception:
-    pass
-collection = chroma_client.get_or_create_collection(name="medibot_docs")
+collection      = chroma_client.get_or_create_collection(name="medibot_docs")
 
 
 # ── Chargement des documents ──────────────────────────────────────────────────
@@ -76,7 +71,7 @@ def load_documents_from_directory(directory_path: str) -> list:
 
 # ── Découpage en chunks ───────────────────────────────────────────────────────
 
-def split_text(text: str, chunk_size: int = 500, chunk_overlap: int = 150) -> list:
+def split_text(text: str, chunk_size: int = 300, chunk_overlap: int = 100) -> list:
     """
     Découpe un texte en chunks de taille fixe avec overlap.
     chunk_overlap augmenté à 100 pour ne pas couper les phrases importantes.
@@ -102,6 +97,15 @@ DATA_DIRS = [
 
 def run_indexing():
     """Lance l'indexation complète — à appeler uniquement depuis __main__."""
+    # Supprimer et recréer la collection pour repartir propre
+    global collection
+    try:
+        chroma_client.delete_collection(name="medibot_docs")
+        print("[index_docs] Collection existante supprimée.")
+    except Exception:
+        pass
+    collection = chroma_client.get_or_create_collection(name="medibot_docs")
+
     print("=== Chargement des documents ===")
     all_documents = []
     for folder in DATA_DIRS:
@@ -154,7 +158,7 @@ def run_indexing():
         embeds_to_add = []
         for b in range(0, len(docs_to_add), BATCH_SIZE):
             batch = docs_to_add[b:b + BATCH_SIZE]
-            embeds_to_add.extend(model.encode(batch).tolist())
+            embeds_to_add.extend(model.encode(batch, convert_to_numpy=True).tolist())
             print(f"  Embeddings calculés : {min(b + BATCH_SIZE, len(docs_to_add))}/{len(docs_to_add)}")
 
         collection.add(
@@ -192,8 +196,8 @@ def query_documents(question: str, n_results: int = 3) -> list:
 if __name__ == "__main__":
     run_indexing()
     print("\n=== Test de retrieval ===")
-    test_q = "Quels vaccins sont obligatoires pour le Hadj ?"
-    results = query_documents(test_q, n_results=2)
+    test_q = "prix vaccin méningite ACYW135 Hadj Omra 130 DT"
+    results = query_documents(test_q, n_results=3)
     for r in results:
         print(f"\n[Source: {r['source']}]")
         print(r["text"][:300])

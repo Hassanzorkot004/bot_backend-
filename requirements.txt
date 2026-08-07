@@ -1,5 +1,5 @@
 groq
 PyYAML
-sentence-transformers
 chromadb
 pypdf
+sentence-transformers
