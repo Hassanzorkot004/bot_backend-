@@ -1,45 +1,63 @@
 """
 index_docs.py
 -------------
-Script à lancer UNE SEULE FOIS pour indexer les documents de data_chatbot/
-dans ChromaDB avec des embeddings multilingues (français/arabe).
+Indexation des documents de data_chatbot/ dans ChromaDB.
+Utilise l'API Mistral (mistral-embed) pour les embeddings —
+zéro mémoire locale, multilingue français/arabe.
 
-Usage :
-    python demo_chatbot/index_docs.py
+Usage (une seule fois) :
+    python index_docs.py
 """
 
 import os
+import time
 import chromadb
 from pypdf import PdfReader
-from sentence_transformers import SentenceTransformer
+from mistralai.client import Mistral
 
-# ── Modèle multilingue LÉGER (~90MB en mémoire) ───────────────────────────────
-# paraphrase-multilingual-MiniLM-L12-v2 = 118MB disque, ~200MB RAM
-# Bien plus petit que le modèle complet, supporte français/arabe
-model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+# ── Client Mistral ─────────────────────────────────────────────────────────────
+def _load_mistral_key() -> str:
+    key = os.environ.get("MISTRAL_API_KEY", "")
+    if key:
+        return key
+    try:
+        import yaml
+        _here = os.path.dirname(os.path.abspath(__file__))
+        yaml_path = os.path.join(_here, "..", "configs", "medical_bot.yaml")
+        with open(yaml_path, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+        return data.get("chatbot", {}).get("mistral_api_key", "")
+    except Exception:
+        return ""
+
+mistral_client = Mistral(api_key=_load_mistral_key())
+EMBED_MODEL    = "mistral-embed"
 
 
 def get_embedding(text: str) -> list:
-    return model.encode(text, convert_to_numpy=True).tolist()
+    """Embedding d'un seul texte via Mistral API."""
+    response = mistral_client.embeddings.create(model=EMBED_MODEL, inputs=[text])
+    return response.data[0].embedding
+
+
+def get_embeddings_batch(texts: list) -> list:
+    """Embedding d'un batch de textes via Mistral API."""
+    response = mistral_client.embeddings.create(model=EMBED_MODEL, inputs=texts)
+    return [item.embedding for item in response.data]
 
 
 # ── ChromaDB : base locale persistante ────────────────────────────────────────
-# Le dossier chroma_db/ sera créé dans demo_chatbot/
 BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 CHROMA_DIR = os.path.join(BASE_DIR, "chroma_db")
 
-chroma_client   = chromadb.PersistentClient(path=CHROMA_DIR)
-collection      = chroma_client.get_or_create_collection(name="medibot_docs")
+chroma_client = chromadb.PersistentClient(path=CHROMA_DIR)
+collection    = chroma_client.get_or_create_collection(name="medibot_docs")
 
 
-# ── Chargement des documents ──────────────────────────────────────────────────
+# ── Chargement des documents ───────────────────────────────────────────────────
 
 def load_documents_from_directory(directory_path: str) -> list:
-    """
-    Lit tous les fichiers .txt et .pdf dans un dossier.
-    Retourne une liste de dicts : {id, text, source_dir, filename}
-    """
-    documents = []
+    documents   = []
     folder_name = os.path.basename(directory_path)
 
     for filename in os.listdir(directory_path):
@@ -49,43 +67,28 @@ def load_documents_from_directory(directory_path: str) -> list:
         if filename.endswith(".txt"):
             with open(filepath, "r", encoding="utf-8") as f:
                 text = f.read()
-
         elif filename.endswith(".pdf"):
             reader = PdfReader(filepath)
-            text = "\n".join(
-                page.extract_text() or ""
-                for page in reader.pages
-            )
+            text = "\n".join(page.extract_text() or "" for page in reader.pages)
 
         if text.strip():
-            documents.append({
-                "id":         filename,
-                "text":       text,
-                "source_dir": folder_name,   # ex: "vaccination_enfants"
-                "filename":   filename,
-            })
+            documents.append({"text": text, "source_dir": folder_name, "filename": filename})
             print(f"  ✓ Chargé : {folder_name}/{filename} ({len(text)} chars)")
 
     return documents
 
 
-# ── Découpage en chunks ───────────────────────────────────────────────────────
+# ── Découpage en chunks ────────────────────────────────────────────────────────
 
 def split_text(text: str, chunk_size: int = 300, chunk_overlap: int = 100) -> list:
-    """
-    Découpe un texte en chunks de taille fixe avec overlap.
-    chunk_overlap augmenté à 100 pour ne pas couper les phrases importantes.
-    """
-    chunks = []
-    start  = 0
+    chunks, start = [], 0
     while start < len(text):
-        end = start + chunk_size
-        chunks.append(text[start:end])
-        start = end - chunk_overlap
+        chunks.append(text[start:start + chunk_size])
+        start += chunk_size - chunk_overlap
     return chunks
 
 
-# ── Pipeline principal ────────────────────────────────────────────────────────
+# ── Pipeline principal ─────────────────────────────────────────────────────────
 
 DATA_DIRS = [
     "data_chatbot/carte_sanitaaire",
@@ -96,9 +99,9 @@ DATA_DIRS = [
 
 
 def run_indexing():
-    """Lance l'indexation complète — à appeler uniquement depuis __main__."""
-    # Supprimer et recréer la collection pour repartir propre
+    """Lance l'indexation complète."""
     global collection
+
     try:
         chroma_client.delete_collection(name="medibot_docs")
         print("[index_docs] Collection existante supprimée.")
@@ -113,76 +116,48 @@ def run_indexing():
         if not os.path.exists(folder_path):
             print(f"  ⚠ Dossier introuvable : {folder_path}")
             continue
-        docs = load_documents_from_directory(folder_path)
-        all_documents.extend(docs)
-
-    print(f"\nTotal documents chargés : {len(all_documents)}")
+        all_documents.extend(load_documents_from_directory(folder_path))
+    print(f"\nTotal documents : {len(all_documents)}")
 
     print("\n=== Découpage en chunks ===")
-    all_chunks    = []
-    all_ids       = []
-    all_metadatas = []
-
+    all_chunks, all_ids, all_metadatas = [], [], []
     chunk_counter = 0
     for doc in all_documents:
-        chunks = split_text(doc["text"], chunk_size=1000, chunk_overlap=100)
-        for chunk in chunks:
-            if not chunk.strip():
-                continue
-            all_chunks.append(chunk)
-            all_ids.append(f"chunk_{chunk_counter}")
-            all_metadatas.append({
-                "source_dir": doc["source_dir"],
-                "filename":   doc["filename"],
-            })
-            chunk_counter += 1
+        for chunk in split_text(doc["text"]):
+            if chunk.strip():
+                all_chunks.append(chunk)
+                all_ids.append(f"chunk_{chunk_counter}")
+                all_metadatas.append({"source_dir": doc["source_dir"], "filename": doc["filename"]})
+                chunk_counter += 1
+    print(f"Total chunks : {len(all_chunks)}")
 
-    print(f"Total chunks créés : {len(all_chunks)}")
+    print("\n=== Calcul des embeddings via Mistral API ===")
+    BATCH_SIZE     = 20
+    embeds_to_add  = []
+    for b in range(0, len(all_chunks), BATCH_SIZE):
+        batch = all_chunks[b:b + BATCH_SIZE]
+        embeds_to_add.extend(get_embeddings_batch(batch))
+        print(f"  {min(b + BATCH_SIZE, len(all_chunks))}/{len(all_chunks)}")
+        time.sleep(0.3)
 
-    print("\n=== Calcul des embeddings et indexation ===")
-    try:
-        existing_ids = set(collection.get(ids=all_ids).get("ids", []))
-    except Exception:
-        existing_ids = set()
+    collection.add(
+        documents=all_chunks,
+        embeddings=embeds_to_add,
+        ids=all_ids,
+        metadatas=all_metadatas,
+    )
+    print(f"\n✅ {len(all_chunks)} chunks indexés dans ChromaDB.")
 
-    missing = [(i, _id) for i, _id in enumerate(all_ids) if _id not in existing_ids]
-    print(f"Chunks à ajouter : {len(missing)} (déjà indexés : {len(existing_ids)})")
 
-    if missing:
-        indices      = [i for i, _ in missing]
-        docs_to_add  = [all_chunks[i]    for i in indices]
-        ids_to_add   = [all_ids[i]       for i in indices]
-        metas_to_add = [all_metadatas[i] for i in indices]
+# ── Retrieval ──────────────────────────────────────────────────────────────────
 
-        BATCH_SIZE    = 32
-        embeds_to_add = []
-        for b in range(0, len(docs_to_add), BATCH_SIZE):
-            batch = docs_to_add[b:b + BATCH_SIZE]
-            embeds_to_add.extend(model.encode(batch, convert_to_numpy=True).tolist())
-            print(f"  Embeddings calculés : {min(b + BATCH_SIZE, len(docs_to_add))}/{len(docs_to_add)}")
-
-        collection.add(
-            documents=docs_to_add,
-            embeddings=embeds_to_add,
-            ids=ids_to_add,
-            metadatas=metas_to_add,
-        )
-        print(f"\n✅ {len(ids_to_add)} chunks ajoutés dans ChromaDB ({CHROMA_DIR})")
-    else:
-        print("✅ Collection déjà à jour, rien à ajouter.")
-
-# ── Fonction de retrieval (importable par medical_bot.py) ─────────────────────
-
-def query_documents(question: str, n_results: int = 3) -> list:
-    """
-    Recherche les chunks les plus pertinents pour une question.
-    Retourne une liste de dicts : {text, source}
-    """
+def query_documents(question: str, n_results: int = 5) -> list:
+    """Recherche les chunks les plus pertinents pour une question."""
     query_embedding = get_embedding(question)
     results = collection.query(
         query_embeddings=[query_embedding],
         n_results=n_results,
-        include=["documents", "metadatas","distances"],
+        include=["documents", "metadatas"],
     )
     chunks    = results["documents"][0]
     metadatas = results["metadatas"][0]
@@ -196,8 +171,7 @@ def query_documents(question: str, n_results: int = 3) -> list:
 if __name__ == "__main__":
     run_indexing()
     print("\n=== Test de retrieval ===")
-    test_q = "prix vaccin méningite ACYW135 Hadj Omra 130 DT"
-    results = query_documents(test_q, n_results=3)
+    results = query_documents("Combien coûte le vaccin contre la méningite pour le Hadj ?", n_results=3)
     for r in results:
         print(f"\n[Source: {r['source']}]")
         print(r["text"][:300])

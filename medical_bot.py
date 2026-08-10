@@ -282,22 +282,30 @@ class MediBotHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    # Indexation automatique si ChromaDB est vide (premier démarrage sur Render)
-    from index_docs import run_indexing, collection
-    if collection.count() == 0:
-        print("[medibot] ChromaDB vide — indexation des documents en cours...")
-        run_indexing()
-        print("[medibot] Indexation terminée.")
-    else:
-        print(f"[medibot] ChromaDB prêt ({collection.count()} chunks indexés).")
-
     import socket
+    import threading
+
+    # Lancer le serveur HTTP immédiatement (Render détecte le port)
+    server = HTTPServer(("0.0.0.0", PORT), MediBotHandler)
     local_ip = socket.gethostbyname(socket.gethostname())
     print(f"MediBot running on http://0.0.0.0:{PORT}")
     print(f"Accessible sur le reseau local : http://{local_ip}:{PORT}")
     print(f"Model : {MODEL}")
+
+    # Indexation en arrière-plan (ne bloque pas le serveur)
+    def _index_in_background():
+        from index_docs import run_indexing, collection
+        if collection.count() == 0:
+            print("[medibot] ChromaDB vide — indexation en cours...")
+            run_indexing()
+            print("[medibot] Indexation terminée — RAG opérationnel.")
+        else:
+            print(f"[medibot] ChromaDB prêt ({collection.count()} chunks).")
+
+    threading.Thread(target=_index_in_background, daemon=True).start()
+
     print("Press Ctrl+C to stop.")
-    HTTPServer(("0.0.0.0", PORT), MediBotHandler).serve_forever()
+    server.serve_forever()
 
 
 """ Pour construire medibot nous n'avons pas utilisé fastapi mais plutot le module HTTPServer de python standard library, car c est plus simple et suffisant pour un demo chatbot local. FastAPI est plus adapté pour des applications web plus complexes avec plusieurs routes, authentification, etc. Ici on a juste une route GET pour la page HTML et une route POST pour l API de chat. """

@@ -2,4 +2,4 @@ groq
 PyYAML
 chromadb
 pypdf
-sentence-transformers
+mistralai
