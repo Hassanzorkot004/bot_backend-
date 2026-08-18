@@ -19,7 +19,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from index_docs import query_documents
 
 PORT = int(os.environ.get("PORT", 8080))
-MODEL = "llama-3.1-8b-instant"
+MODEL = "openai/gpt-oss-120b"
 
 # Cle Groq depuis variable d'environnement (Railway/Render) ou fallback yaml local
 def _load_groq_key() -> str:
