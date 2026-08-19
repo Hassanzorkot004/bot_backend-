@@ -332,7 +332,7 @@ if __name__ == "__main__":
     from index_docs import collection
     print(f"[medibot] ChromaDB prêt ({collection.count()} chunks).")
 
-    threading.Thread(target=_index_in_background, daemon=True).start()
+    #threading.Thread(target=_index_in_background, daemon=True).start()
 
     print("Press Ctrl+C to stop.")
     server.serve_forever()
