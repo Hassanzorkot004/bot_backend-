@@ -321,14 +321,16 @@ if __name__ == "__main__":
     print(f"Model : {MODEL}")
 
     # Indexation en arrière-plan (ne bloque pas le serveur)
-    def _index_in_background():
-        from index_docs import run_indexing, collection
-        if collection.count() == 0:
-            print("[medibot] ChromaDB vide — indexation en cours...")
-            run_indexing()
-            print("[medibot] Indexation terminée — RAG opérationnel.")
-        else:
-            print(f"[medibot] ChromaDB prêt ({collection.count()} chunks).")
+    # def _index_in_background():
+    #     from index_docs import run_indexing, collection
+    #     if collection.count() == 0:
+    #         print("[medibot] ChromaDB vide — indexation en cours...")
+    #         run_indexing()
+    #         print("[medibot] Indexation terminée — RAG opérationnel.")
+    #     else:
+    #         print(f"[medibot] ChromaDB prêt ({collection.count()} chunks).")
+    from index_docs import collection
+    print(f"[medibot] ChromaDB prêt ({collection.count()} chunks).")
 
     threading.Thread(target=_index_in_background, daemon=True).start()
 

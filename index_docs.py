@@ -49,6 +49,8 @@ def get_embeddings_batch(texts: list) -> list:
 # ── ChromaDB : base locale persistante ────────────────────────────────────────
 BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 CHROMA_DIR = os.path.join(BASE_DIR, "chroma_db")
+print(f"[index_docs] CHROMA_DIR résolu = {CHROMA_DIR}")
+print(f"[index_docs] Existe ? {os.path.exists(CHROMA_DIR)}")
 
 chroma_client = chromadb.PersistentClient(path=CHROMA_DIR)
 collection    = chroma_client.get_or_create_collection(name="medibot_docs")
