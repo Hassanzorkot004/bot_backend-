@@ -3,6 +3,11 @@ Demo Chatbot — serveur local simple pour tester le systeme Agentic QA.
 Lance avec : python demo_chatbot/app.py
 Accessible sur : http://localhost:8080
 """
+#nous allons ajoiuter la fonctionanlite RAG de sorte a ceque medibot soit bcp plus orienté 
+# vers des questions administratives-medecine 
+""" Donc on a creer le folder data_chatbot ,on y trouve des files sur la carte sanitaire en tunisie ,sante des voyageurs cad les
+tunisiens qui veulent voyager a l etranger posent des questions concernant les vaccins a faire , 
+ """
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json

@@ -210,11 +210,39 @@ HTML_PAGE = """<!DOCTYPE html>
 </html>"""
 
 
+def translate_to_french(text: str) -> str:
+    """Reformule la question en français pour améliorer le retrieval sur des docs français."""
+    try:
+        result = groq_client.chat.completions.create(
+            model=MODEL,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "Tu es un traducteur. "
+                        "Traduis ou reformule le texte suivant en français clair et concis. "
+                        "Réponds UNIQUEMENT avec la traduction, sans explication."
+                    ),
+                },
+                {"role": "user", "content": text},
+            ],
+            max_tokens=256,
+            temperature=0.0,
+        )
+        translated = result.choices[0].message.content.strip()
+        return translated if translated else text
+    except Exception:
+        return text  # fallback : utiliser la question originale
+
+
 def get_response(message: str) -> str:
     """Appelle Groq avec le system prompt + contexte RAG."""
     try:
-        # 1. Chercher les chunks pertinents dans ChromaDB
-        chunks = query_documents(message, n_results=5)
+        # 1. Traduire la question en français pour aligner avec les docs
+        french_query = translate_to_french(message)
+
+        # 2. Chercher les chunks pertinents dans ChromaDB (avec la query en français)
+        chunks = query_documents(french_query, n_results=5)
 
         # 2. Construire le contexte documentaire
         if chunks:

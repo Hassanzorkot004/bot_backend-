@@ -80,7 +80,7 @@ def load_documents_from_directory(directory_path: str) -> list:
 
 # ── Découpage en chunks ────────────────────────────────────────────────────────
 
-def split_text(text: str, chunk_size: int = 300, chunk_overlap: int = 100) -> list:
+def split_text(text: str, chunk_size: int = 600, chunk_overlap: int = 150) -> list:
     chunks, start = [], 0
     while start < len(text):
         chunks.append(text[start:start + chunk_size])
@@ -151,21 +151,35 @@ def run_indexing():
 
 # ── Retrieval ──────────────────────────────────────────────────────────────────
 
-def query_documents(question: str, n_results: int = 5) -> list:
-    """Recherche les chunks les plus pertinents pour une question."""
+def query_documents(question: str, n_results: int = 5, distance_threshold: float = 1.5) -> list:
+    """Recherche les chunks les plus pertinents pour une question.
+
+    Args:
+        question: La question à rechercher.
+        n_results: Nombre de chunks à récupérer (augmenté à 5 par défaut).
+        distance_threshold: Seuil de distance L2 — chunks au-delà sont filtrés
+                            (1.5 = permissif, couvre bien les documents techniques/tabulaires).
+    """
     query_embedding = get_embedding(question)
     results = collection.query(
         query_embeddings=[query_embedding],
         n_results=n_results,
-        include=["documents", "metadatas"],
+        include=["documents", "metadatas", "distances"],
     )
     chunks    = results["documents"][0]
     metadatas = results["metadatas"][0]
+    distances = results["distances"][0]  # L2 : plus petit = plus similaire
 
-    return [
-        {"text": chunk, "source": f"{meta['source_dir']}/{meta['filename']}"}
-        for chunk, meta in zip(chunks, metadatas)
-    ]
+    filtered = []
+    for chunk, meta, dist in zip(chunks, metadatas, distances):
+        if dist <= distance_threshold:
+            filtered.append({
+                "text": chunk,
+                "source": f"{meta['source_dir']}/{meta['filename']}",
+                "distance": round(dist, 4),
+            })
+
+    return filtered
 
 
 if __name__ == "__main__":
@@ -173,5 +187,5 @@ if __name__ == "__main__":
     print("\n=== Test de retrieval ===")
     results = query_documents("Combien coûte le vaccin contre la méningite pour le Hadj ?", n_results=3)
     for r in results:
-        print(f"\n[Source: {r['source']}]")
+        print(f"\n[Source: {r['source']} | distance: {r['distance']}]")
         print(r["text"][:300])

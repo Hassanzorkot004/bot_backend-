@@ -1,0 +1,160 @@
+[GOUVERNORAT : SFAX]
+- Établissement : Direction Régionale de la Santé de Sfax (Service de Médecine Préventive et d'Épidémiologie)
+- Adresse : Route d'El Ain, Km 0.5, Sfax Ville
+- Prestations : Vaccination internationale, vaccin Omra/Hadj (Méningite), délivrance du carnet jaune international.
+- Tarifs : Méningite ACYW135 (130 DT), Carnet de vaccination (10 DT). Tarifs nationaux réglementés.
+- Horaires : Du lundi au vendredi de 08h00 à 13h00 (Régime de séance unique applicable en été/Ramadan).
+
+[GOUVERNORAT : SOUSSE]
+- Établissement : Groupement de Santé de Base de Sousse (Centre de Vaccination Internationale)
+- Adresse : Avenue Ibn Khaldoun (Près de la Direction Régionale de la Santé), Sousse
+- Prestations : Vaccination des voyageurs, contrôle des carnets, vaccination Omra.
+- Tarifs : Méningite ACYW135 (130 DT), Carnet international (10 DT).
+- Horaires : Du lundi au vendredi de 08h30 à 13h30.
+
+[GOUVERNORAT : MONASTIR]
+- Établissement : Direction Régionale de la Santé de Monastir (Service de Santé Publique)
+- Adresse : Avenue de la République, Monastir 5000
+- Prestations : Vaccination internationale des pèlerins et des voyageurs.
+- Tarifs : Conformes à la grille tarifaire nationale (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : BIZERTE]
+- Établissement : Groupement de Santé de Base de Bizerte (Centre Intermédiaire de Santé de Base)
+- Adresse : Avenue Hassan Nouri, Bizerte
+- Prestations : Vaccination anti-méningococcique pour le Hadj et la Omra, conseils aux voyageurs.
+- Tarifs : Méningite ACYW135 (130 DT), Duplicata/Carnet (10 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : NABEUL]
+- Établissement : Direction Régionale de la Santé de Nabeul (Service de Médecine Préventive)
+- Adresse : Avenue Habib Thameur, Nabeul
+- Prestations : Vaccination des pèlerins (Omra/Hadj) et délivrance des visas sanitaires.
+- Tarifs : Tarifs nationaux fixes (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : KAIROUAN]
+- Établissement : Service d'Épidémiologie et de Médecine Préventive de Kairouan
+- Adresse : Avenue Ibn El Jazzar (Près de l'Hôpital Ibn El Jazzar), Kairouan
+- Prestations : Vaccination internationale, consultations médicales pré-voyage, carnet jaune.
+- Tarifs : Méningite ACYW135 (130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : GABÈS]
+- Établissement : Direction Régionale de la Santé de Gabès (Service des Soins de Santé de Base)
+- Adresse : Avenue Habib Bourguiba, Gabès
+- Prestations : Vaccination internationale des voyageurs et des pèlerins de la région.
+- Tarifs : Fixés par l'État (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : ARIANA]
+- Établissement : Groupement de Santé de Base de l'Ariana
+- Adresse : Avenue Élite Chaker, Ariana (Grand Tunis)
+- Prestations : Vaccination Omra et Hadj pour les résidents de l'Ariana ne souhaitant pas se déplacer à l'IPT.
+- Tarifs : Méningite ACYW135 (130 DT).
+- Horaires : Du lundi au vendredi de 08h30 à 13h30.
+
+[GOUVERNORAT : BEN AROUS]
+- Établissement : Direction Régionale de la Santé de Ben Arous
+- Adresse : Avenue de France, Ben Arous (Grand Tunis)
+- Prestations : Vaccination internationale de proximité (Méningite, dTP).
+- Tarifs : Réglementaires (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h30 à 13h30.
+
+[GOUVERNORAT : MANOUBA]
+- Établissement : Groupement de Santé de Base de la Manouba
+- Adresse : Route de l'Hôpital Razi, La Manouba (Grand Tunis)
+- Prestations : Centre de vaccination pour les pèlerins et certificats internationaux.
+- Tarifs : Identiques aux centres nationaux (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h30 à 13h30.
+
+[GOUVERNORAT : BEJA]
+- Établissement : Direction Régionale de la Santé de Béja (Service de Médecine Préventive)
+- Adresse : Avenue Habib Bourguiba, Béja
+- Prestations : Vaccination internationale et suivi épidémiologique des voyageurs.
+- Tarifs : Fixes (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : JENDOUBA]
+- Établissement : Direction Régionale de la Santé de Jendouba
+- Adresse : Route de Tunis, Jendouba
+- Prestations : Vaccination des voyageurs et pèlerins du Nord-Ouest.
+- Tarifs : Méningite ACYW135 (130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : LE KEF]
+- Établissement : Groupement de Santé de Base du Kef
+- Adresse : Rue de l'Environnement, Le Kef
+- Prestations : Vaccination internationale et délivrance du carnet obligatoire.
+- Tarifs : Tarifs étatiques (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : SILIANA]
+- Établissement : Direction Régionale de la Santé de Siliana
+- Adresse : Avenue de la République, Siliana
+- Prestations : Accueil et vaccination des pèlerins pour la Omra et le Hadj.
+- Tarifs : Grille nationale (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : GAFSA]
+- Établissement : Service de Médecine Préventive de la Direction Régionale de Gafsa
+- Adresse : Avenue de Palestine, Gafsa
+- Prestations : Vaccination internationale et conseils médicaux aux voyageurs.
+- Tarifs : Méningite ACYW135 (130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : TOZEUR]
+- Établissement : Direction Régionale de la Santé de Tozeur
+- Adresse : Avenue Abou El Kacem Chebbi, Tozeur
+- Prestations : Vaccination internationale, protection sanitaire des voyageurs.
+- Tarifs : Officiels (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : KASSERINE]
+- Établissement : Groupement de Santé de Base de Kasserine
+- Adresse : Route de l'Hôpital Régional, Kasserine
+- Prestations : Campagnes de vaccination pour la Omra et délivrance des livrets de santé internationaux.
+- Tarifs : Grille ministérielle (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : SIDI BOUZID]
+- Établissement : Direction Régionale de la Santé de Sidi Bouzid
+- Adresse : Avenue Habib Bourguiba, Sidi Bouzid
+- Prestations : Vaccination internationale (Méningite ACYW135).
+- Tarifs : Réglementés (130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : MEDENINE]
+- Établissement : Direction Régionale de la Santé de Médenine (Service des Soins de Base)
+- Adresse : Route de Ben Guerdane, Médenine
+- Prestations : Vaccination des pèlerins et des voyageurs vers l'étranger (Libye, Europe, etc.).
+- Tarifs : Fixes (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : TATAOUINE]
+- Établissement : Groupement de Santé de Base de Tataouine
+- Adresse : Avenue de l'Environnement, Tataouine
+- Prestations : Vaccination internationale et conseils de prévention sanitaire.
+- Tarifs : Tarification nationale (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : KEBILI]
+- Établissement : Direction Régionale de la Santé de Kébili
+- Adresse : Rue des Martyrs, Kébili
+- Prestations : Vaccination anti-méningococcique officielle pour la Omra.
+- Tarifs : Méningite 130 DT, Carnet de vaccination 10 DT.
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : ZAGHOUAN]
+- Établissement : Groupement de Santé de Base de Zaghouan
+- Adresse : Cité Principale (Près de l'Hôpital Régional), Zaghouan
+- Prestations : Enregistrement et vaccination internationale des pèlerins.
+- Tarifs : Fixes (Méningite 130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
+
+[GOUVERNORAT : MAHDIA]
+- Établissement : Direction Régionale de la Santé de Mahdia (Service de Médecine Préventive)
+- Adresse : Avenue El Moez Lidinillah, Mahdia
+- Prestations : Vaccination internationale, traitement des demandes de carnet jaune pour les voyageurs.
+- Tarifs : Méningite ACYW135 (130 DT).
+- Horaires : Du lundi au vendredi de 08h00 à 13h00.
