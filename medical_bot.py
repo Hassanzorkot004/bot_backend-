@@ -148,7 +148,7 @@ HTML_PAGE = """<!DOCTYPE html>
             </div>
         </div>
         <div class="disclaimer">
-            ⚠️ Cet assistant fournit des informations générales uniquement. En cas d'urgence, appelez le <strong>15 (SAMU)</strong>.
+            ⚠️ Cet assistant fournit des informations générales uniquement. En cas d'urgence, appelez le <strong>190 (SAMU)</strong>.
         </div>
         <div class="chat-messages" id="messages">
             <div class="message bot-message">
